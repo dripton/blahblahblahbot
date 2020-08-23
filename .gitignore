@@ -1,2 +1,4 @@
 .*.swp
 config.py
+.mypy_cache
+__pycache__
