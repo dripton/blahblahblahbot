@@ -4,11 +4,12 @@
 
 import sys
 
-import config
-
 from twisted.internet import defer, endpoints, protocol, reactor, ssl, task
 from twisted.python import log
 from twisted.words.protocols import irc
+
+import config
+import database
 
 
 class IRCProtocol(irc.IRCClient):
@@ -34,7 +35,7 @@ class IRCProtocol(irc.IRCClient):
         func = getattr(self, "command_" + command, None)
         if not func:
             return
-        deferred = defer.maybeDeferred(func, rest)
+        deferred = defer.maybeDeferred(func, nick, channel, rest)
         deferred.addErrback(self._showError)
         if channel == self.nickname:
             deferred.addCallback(self._sendMessage, nick)
@@ -49,28 +50,37 @@ class IRCProtocol(irc.IRCClient):
     def _showError(self, failure):
         return failure.getErrorMessage()
 
-    def command_ping(self, rest):
+    def command_ping(self, nick, channel, rest):
         return "pong"
 
-    def command_help(self, rest):
-        return "!addquote, !deletequote, !quote"
+    def command_help(self, nick, channel, rest):
+        return "!addquote (aq), !deletequote (dq), !quote (q), !findquote (fq)"
 
-    def command_addquote(self, rest):
-        # TODO
-        return "fake added a quote"
+    def command_addquote(self, nick, channel, rest):
+        return self.factory.db.add_quote(rest, channel, nick)
 
-    def command_deletequote(self, rest):
-        # TODO
-        return "fake deleted a quote"
+    command_aq = command_addquote
 
-    def command_quote(self, rest):
-        # TODO
-        return "Eat my shorts! -- The Raven"
+    def command_deletequote(self, nick, channel, rest):
+        return self.factory.db.delete_quote(rest, channel, nick)
+
+    command_dq = command_deletequote
+
+    def command_quote(self, nick, channel, rest):
+        return self.factory.db.quote(channel)
+
+    command_q = command_quote
+
+    def command_findquote(self, nick, channel, rest):
+        return self.factory.db.find_quote(rest, channel)
+
+    command_fq = command_findquote
 
 
 class IRCFactory(protocol.ReconnectingClientFactory):
     protocol = IRCProtocol
     channels = config.channels
+    db = database.Database(config.sqlite_path)
 
 
 def main(reactor, host, port):
