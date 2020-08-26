@@ -1,2 +1,17 @@
+[tool.poetry]
+name = "blahblahblahbot"
+version = "1.0"
+description = "A twisted clone of an IRC quotebot"
+authors = ["David Ripton <dripton>", "Chris Rose <offbyone>"]
+
+[tool.poetry.dependencies]
+python = "3.8+"
+twisted = "^20.3.0"
+pyOpenSSL = "^19.1.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.0"
+black = "^20.8b0"
+
 [tool.black]
 line-length = 79
