@@ -8,6 +8,7 @@ authors = ["David Ripton <dripton>", "Chris Rose <offbyone>"]
 python = "3.8+"
 twisted = "^20.3.0"
 pyOpenSSL = "^19.1.0"
+service_identity = "^18.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.0"
