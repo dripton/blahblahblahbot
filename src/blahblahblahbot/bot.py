@@ -8,8 +8,7 @@ from twisted.internet import defer, endpoints, protocol, reactor, ssl, task
 from twisted.python import log
 from twisted.words.protocols import irc
 
-import config
-import database
+from . import config, database
 
 
 class IRCProtocol(irc.IRCClient):
@@ -83,7 +82,7 @@ class IRCFactory(protocol.ReconnectingClientFactory):
     db = database.Database(config.sqlite_path)
 
 
-def main(reactor, host, port):
+def run(reactor, host, port):
     options = ssl.optionsForClientTLS(host)
     endpoint = endpoints.SSL4ClientEndpoint(reactor, host, port, options)
     factory = IRCFactory()
@@ -92,6 +91,10 @@ def main(reactor, host, port):
     return deferred
 
 
-if __name__ == "__main__":
+def main():
     log.startLogging(sys.stderr)
-    task.react(main, (config.serverhost, config.serverport))
+    task.react(run, (config.serverhost, config.serverport))
+
+
+if __name__ == "__main__":
+    main()
