@@ -8,7 +8,8 @@ from twisted.internet import defer, endpoints, protocol, reactor, ssl, task
 from twisted.python import log
 from twisted.words.protocols import irc
 
-from . import config, database
+import config
+import database
 
 
 class IRCProtocol(irc.IRCClient):

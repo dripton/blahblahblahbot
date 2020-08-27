@@ -2,7 +2,7 @@ import os
 import sqlite3
 import time
 
-from . import config
+import config
 
 
 DDL = """
