@@ -34,6 +34,8 @@ class Database:
 
     def add_quote(self, quote, channel, quoter):
         """Add the quote if it's not already there, for this channel."""
+        if not quote:
+            return "Derp, I think you forgot to provide a quote!"
         if "--" in quote:
             quote, author = quote.rsplit("--", 1)
         else:
