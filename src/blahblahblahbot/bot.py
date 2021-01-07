@@ -2,6 +2,7 @@
 
 """An IRC quote bot."""
 
+import random
 import sys
 
 from twisted.internet import defer, endpoints, protocol, reactor, ssl, task
@@ -52,6 +53,12 @@ class IRCProtocol(irc.IRCClient):
 
     def command_ping(self, nick, channel, rest):
         return "pong"
+
+    def command_aj(self, nick, channel, rest):
+        if random.random() <= 0.99:
+            return "Nice!"
+        else:
+            return "Awesome!"
 
     def command_help(self, nick, channel, rest):
         return "!addquote (aq), !deletequote (dq), !quote (q), !findquote (fq)"
