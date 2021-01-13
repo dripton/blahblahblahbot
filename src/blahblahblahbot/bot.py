@@ -38,6 +38,9 @@ class IRCProtocol(irc.IRCClient):
             return
         deferred = defer.maybeDeferred(func, nick, channel, rest)
         deferred.addErrback(self._showError)
+        if command == "aj" and rest:
+            # !aj foo   -> say "foo, Nice!"
+            nick = rest
         if channel == self.nickname:
             deferred.addCallback(self._sendMessage, nick)
         else:
