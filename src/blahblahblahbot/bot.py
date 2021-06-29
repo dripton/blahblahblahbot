@@ -86,6 +86,14 @@ class IRCProtocol(irc.IRCClient):
 
     command_fq = command_findquote
 
+    def irc_unknown(self, prefix, command, params):
+        if command == "INVITE" and len(params) == 2:
+            user, channel = params
+            if user == self.nickname:
+                if channel not in config.channels:
+                    config.channels.append(channel)
+                self.join(channel)
+
 
 class IRCFactory(protocol.ReconnectingClientFactory):
     protocol = IRCProtocol
