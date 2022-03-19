@@ -12,6 +12,7 @@ from twisted.words.protocols import irc
 import config
 import database
 
+# TODO add find quote by author
 
 class IRCProtocol(irc.IRCClient):
 
