@@ -54,7 +54,7 @@ class Database:
                        VALUES (?, ?, ?, ?, ?)"""
             seconds = int(time.time())
             cursor.execute(query, (quote, quoter, author, channel, seconds))
-            return "Added quote"
+            return f"Added quote by {author}"
 
     def delete_quote(self, quote, channel, user):
         """Delete the quote if user is author, quoter, or admin."""
