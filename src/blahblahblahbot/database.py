@@ -19,7 +19,9 @@ CREATE TABLE quotes (
 
 class Database:
     def __init__(self, sqlite_path):
-        exists = os.path.exists(sqlite_path) and os.path.getsize(sqlite_path) > 0
+        exists = (
+            os.path.exists(sqlite_path) and os.path.getsize(sqlite_path) > 0
+        )
         dirname = os.path.dirname(sqlite_path)
         if not os.path.exists(dirname):
             os.makedirs(dirname)
@@ -39,7 +41,7 @@ class Database:
         if "--" in quote:
             quote, author = quote.rsplit("--", 1)
         else:
-            author = quoter
+            return "Sorry, you forgot ' -- author' "
         quote = quote.strip()
         author = author.strip()
         with self.connection:
