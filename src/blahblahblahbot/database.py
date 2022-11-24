@@ -41,7 +41,7 @@ class Database:
         if "--" in quote:
             quote, author = quote.rsplit("--", 1)
         else:
-            return "Sorry, you forgot ' -- author' "
+            return "Sorry, you forgot ' -- <author>' "
         quote = quote.strip()
         author = author.strip()
         with self.connection:
